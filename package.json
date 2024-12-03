@@ -1,0 +1,25 @@
+{
+	"name": "mentoring-sessions",
+	"version": "1.0.0",
+	"description": "Mentoring",
+	"main": "index.js",
+	"scripts": {
+		"test": "jest --config jest.config.js"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/aga-codes/mentoring.git"
+	},
+	"author": "",
+	"license": "ISC",
+	"bugs": {
+		"url": "https://github.com/aga-codes/mentoring/issues"
+	},
+	"homepage": "https://github.com/aga-codes/mentoring#readme",
+	"devDependencies": {
+		"@babel/preset-env": "^7.26.0",
+		"babel-jest": "^29.7.0",
+		"babel-polyfill": "^6.26.0",
+		"jest": "^29.7.0"
+	}
+}
