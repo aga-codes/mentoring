@@ -100,6 +100,8 @@ return => change isAvailable to true
         } else if (action === "return") {
           book.isAvailable = true;
         }
+      } else {
+        return "This book is not in the library";
       }
     });
 
