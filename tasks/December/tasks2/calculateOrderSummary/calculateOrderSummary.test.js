@@ -70,17 +70,17 @@ describe("calculateOrderSummary", () => {
     expect(calculateOrderSummary(order1)).toEqual({
       totalOrders: 2,
       totalItems: 5,
-      totalCost: 3697.5,
+      totalCost: 4110,
     });
     expect(calculateOrderSummary(order2)).toEqual({
       totalOrders: 2,
       totalItems: 5,
-      totalCost: 6680,
+      totalCost: 7650,
     });
     expect(calculateOrderSummary(order3)).toEqual({
       totalOrders: 3,
       totalItems: 37,
-      totalCost: 7694.2,
+      totalCost: 64924,
     });
   });
 });

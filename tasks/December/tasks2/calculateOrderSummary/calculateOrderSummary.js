@@ -10,8 +10,29 @@
 // 1. Liczbą wszystkich zamówień.
 // 2. Suma wszystkich pozycji w zamówieniach.
 // 3. Łącznym kosztem zamówień po zniżkach.
-// Przykład danych wejściowych:
+/*
 
+Przykład danych wejściowych:
+const orders = [
+{
+id: 1,
+items: [
+{ name: "Laptop", price: 3000, quantity: 1 },
+{ name: "Myszka", price: 150, quantity: 2 }
+],
+discount: 10 // procent
+},
+{
+id: 2,
+items: [
+{ name: "Monitor", price: 1000, quantity: 1 },
+{ name: "Klawiatura", price: 200, quantity: 1 }
+],
+discount: 5
+}
+];
+
+*/
 // Oczekiwany wynik:
 // {
 // totalOrders: 2,
@@ -29,25 +50,27 @@
 export const calculateOrderSummary = (order) => {
   const totalNumberOfOrders = order.length;
   let allOrderedItems = 0;
+  let totalPrice = 0; //for the entire thing
 
-  let totalPrice = 0;
-  let totalDiscount = 0;
+  order.forEach((singleOrder) => {
+    let orderDiscount = singleOrder.discount;
+    singleOrder.items.forEach((orderItems) => {
+      allOrderedItems += orderItems.quantity;
 
-  order.flat().map((singleOrder) => {
-    totalDiscount += singleOrder.discount;
+      let singleOrderPrice = 0;
 
-    singleOrder.items.map((orderItems) => {
-      (totalPrice += orderItems.price),
-        (allOrderedItems += orderItems.quantity);
+      singleOrderPrice += orderItems.price * orderItems.quantity;
+      singleOrderPrice =
+        singleOrderPrice - (singleOrderPrice * orderDiscount) / 100;
+
+      totalPrice += singleOrderPrice;
+      singleOrderPrice = 0;
     });
   });
-
-  const totalPriceAfterDiscounts =
-    totalPrice - (totalPrice * totalDiscount) / 100;
 
   return {
     totalOrders: totalNumberOfOrders,
     totalItems: allOrderedItems,
-    totalCost: totalPriceAfterDiscounts,
+    totalCost: totalPrice,
   };
 };

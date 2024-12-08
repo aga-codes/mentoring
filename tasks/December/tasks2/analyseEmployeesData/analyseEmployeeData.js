@@ -12,16 +12,12 @@
 // 3. Tablicą nazwisk pracowników z wynagrodzeniem powyżej podanego progu
 // (np. salary > 5000).
 // Przykład danych wejściowych:
-// const employees = [
-// { name: "Anna", position: "Developer", salary: 6000,
-// isActive: true },
-// { name: "John", position: "Manager", salary: 8000, isActive:
-// false },
-// { name: "Kate", position: "Designer", salary: 5000,
-// isActive: true },
-// { name: "Tom", position: "Tester", salary: 4000, isActive:
-// true }
-// ];
+const employees = [
+  { name: "Anna", position: "Developer", salary: 6000, isActive: true },
+  { name: "John", position: "Manager", salary: 8000, isActive: false },
+  { name: "Kate", position: "Designer", salary: 5000, isActive: true },
+  { name: "Tom", position: "Tester", salary: 4000, isActive: true },
+];
 
 // Oczekiwany wynik (dla progu 5000):
 // {
@@ -33,25 +29,27 @@
 export const analyseEmployeesData = (employees) => {
   const HIGH_INCOME_THREASHOLD = 5000;
 
-  const allHighEarners = [];
-  let totalActiveEmployees = 0;
+  let highEarners = [];
+  let activeEmployees = 0;
   let totalSalaries = 0;
 
-  employees.map((employee) => {
-    totalSalaries += employee.salary;
-
-    if (employee.isActive === true) {
-      totalActiveEmployees += 1;
-    }
-
-    if (employee.salary >= HIGH_INCOME_THREASHOLD) {
-      allHighEarners.push(employee.name);
-    }
-  });
-
-  return {
-    activeEmployees: totalActiveEmployees,
-    totalSalaries: totalSalaries,
-    highEarners: allHighEarners,
-  };
-};
+  return employees.reduce((acc, employee) => {
+    const newAcc = {...acc}
+    
+    newAcc.totalSalaries += employee.salary;
+    
+        if (employee.isActive === true) {
+          newAcc.activeEmployees += 1;
+        }
+    
+        if (employee.salary >= HIGH_INCOME_THREASHOLD) {
+          newAcc.highEarners.push(employee.name);
+        }
+        
+        return newAcc
+    }, {
+    activeEmployees: 0,
+    totalSalaries: 0,
+    highEarners: []
+    });
+}

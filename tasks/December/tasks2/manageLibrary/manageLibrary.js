@@ -73,40 +73,26 @@ return => change isAvailable to true
   let library = [...books];
 
   const addBook = (newBook) => {
-    library.push(newBook);
-    return library;
+    return library.push(newBook);
   };
 
   const removeBook = (payload) => {
-    let bookToRemove;
     const { title } = payload;
-    library.map((singlePosition) => {
-      if (singlePosition.title === title) {
-        console.log("TITLE HAS BEEN FOUND");
-        bookToRemove = library.findIndex((book) => book.title === title);
-      }
-      library.splice(bookToRemove, 1);
-      console.log("LIBRARY HAS BEEN UPDATED", library);
-      return library;
-    });
+
+    library.filter((book) => book.title === title);
+    return library;
   };
 
   const borrowOrReturnBook = (action, payload) => {
-    library.map((book) => {
+    library.forEach((book) => {
       if (book.title === payload.title) {
-        console.log("TITLE HAS BEEN FOUND");
         if (action === "borrow") {
           book.isAvailable = false;
         } else if (action === "return") {
           book.isAvailable = true;
         }
-      } else {
-        return "This book is not in the library";
       }
     });
-
-    console.log("LIBRARY HAS BEEN UPDATED", library);
-    return library;
   };
 
   if (action === "add") addBook(payload);
