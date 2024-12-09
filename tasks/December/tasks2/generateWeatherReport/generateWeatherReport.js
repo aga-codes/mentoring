@@ -14,14 +14,11 @@
 // 3. Posortuj dane według temperatury rosnąco.
 
 // Przykład danych wejściowych:
-// const weatherData = [
-// { city: "Warsaw", temperature: 10, humidity: 80, windSpeed:
-// 15 },
-// { city: "Krakow", temperature: 15, humidity: 70, windSpeed:
-// 10 },
-// { city: "Gdansk", temperature: 5, humidity: 90, windSpeed:
-// 20 }
-// ];
+const weatherData = [
+  { city: "Warsaw", temperature: 10, humidity: 80, windSpeed: 15 },
+  { city: "Krakow", temperature: 15, humidity: 70, windSpeed: 10 },
+  { city: "Gdansk", temperature: 5, humidity: 90, windSpeed: 20 },
+];
 
 // Oczekiwany wynik:
 // {
@@ -36,4 +33,64 @@
 // ]
 // }
 
-//TO DO
+export const generateWeatherReport = (weatherData) => {
+  const getHighestTemperature = () => {
+    const highestTemperaturePlace = weatherData.reduce(
+      (startingTemperature, currentPlace) => {
+        return currentPlace.temperature > startingTemperature.temperature
+          ? currentPlace
+          : startingTemperature;
+      },
+      weatherData[0]
+    );
+
+    return highestTemperaturePlace.city;
+  };
+
+  const getLowestTemperature = () => {
+    const lowestTemperaturePlace = weatherData.reduce(
+      (startingTemperature, currentPlace) => {
+        return currentPlace.temperature < startingTemperature.temperature
+          ? currentPlace
+          : startingTemperature;
+      },
+      weatherData[0]
+    );
+
+    return lowestTemperaturePlace.city;
+  };
+
+  const getAverage = (metric) => {
+    if (metric === "humidity") {
+      const totalHumidity = weatherData.reduce((acc, currentPlace) => {
+        return acc + currentPlace.humidity;
+      }, 0);
+
+      return totalHumidity / weatherData.length;
+    }
+
+    if (metric === "windSpeed") {
+    }
+    const totalWindSpeed = weatherData.reduce((acc, currentPlace) => {
+      return acc + currentPlace.windSpeed;
+    }, 0);
+
+    return totalWindSpeed / weatherData.length;
+  };
+
+  const getWeatherDataSorted = () => {
+    const data = [...weatherData];
+    //sort from the lowest to the highest
+    const sortedData = data.sort((a, b) => a.temperature - b.temperature);
+
+    return sortedData;
+  };
+
+  return {
+    highestTemperature: getHighestTemperature(),
+    lowestTemperature: getLowestTemperature(),
+    averageHumidity: getAverage("humidity"),
+    averageWindSpeed: getAverage("windSpeed"),
+    sortedByTemperature: getWeatherDataSorted(),
+  };
+};

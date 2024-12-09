@@ -43,71 +43,52 @@ const results = [
 // }
 // }
 
+export const analyseSurvery = (results) => {
+  const getAllUniqueQuestions = () => {
+    const allQuestions = results.flatMap((singleResult) => {
+      return singleResult.answers.map((answer) => answer.question);
+    });
 
-//FIX
+    return Array.from(new Set(allQuestions));
+  };
+  const getNumberOfUniqueQuestions = () => {
+    return getAllUniqueQuestions().length;
+  };
 
-// export const analyseSurvery = (results) => {
-//   const getAllUniqueQuestions = () => {
-//     const allQuestions = results.flatMap((singleResult) => {
-//       return singleResult.answers.map((answer) => answer.question);
-//     });
+  const getUsernamesForAllQuestionsAnswered = () => {
+    const questions = getAllUniqueQuestions();
 
-//     return Array.from(new Set(allQuestions));
-//   };
-//   const getNumberOfUniqueQuestions = () => {
-//     return getAllUniqueQuestions().length;
-//   };
+    const usernames = results.filter((user) => {
+      const answeredQuestion = user.answers.map((answer) => answer.question);
+      return questions.every((question) => answeredQuestion.includes(question));
+    });
 
-//   const getUsernamesForAllQuestionsAnswered = () => {
-//     const questions = getAllUniqueQuestions();
+    return usernames.map((person) => person.name);
+  };
 
-//     const usernames = results.filter((user) => {
-//       const answeredQuestion = user.answers.map((answer) => answer.question);
-//       return questions.every((question) => answeredQuestion.includes(question));
-//     });
+  const getAnswersSummary = () => {
+    const uniqueQuestions = getAllUniqueQuestions();
 
-//     return usernames.map((person) => person.name);
-//   };
+    const questionsSummary = uniqueQuestions.reduce(
+      (summary, currentQuestion) => {
+        const allAnswers = results.flatMap((result) => {
+          return result.answers
+            .filter((answer) => answer.question === currentQuestion)
+            .map((answer) => answer.answer);
+        });
 
-//   const getAnswersSummary = () => {
-//     const uniqueQuestions = getAllUniqueQuestions();
+        summary[currentQuestion] = [...new Set(allAnswers)];
 
-//     console.log("unique questions", uniqueQuestions);
+        return summary;
+      },
+      {}
+    );
+    return questionsSummary;
+  };
 
-//     const questionsSummary = uniqueQuestions.reduce(
-//       (summary, currentQuestion) => {
-//         const allAnswers = results.flatMap((result) => {
-//           return result.answers.filter(
-//             (answer) => answer.question === currentQuestion
-//           );
-//         });
-
-//         summary[currentQuestion] = [...new Set(allAnswers)];
-
-//         return summary;
-//       },
-//       {}
-//     );
-//     return questionsSummary;
-//   };
-
-//   const answersSummary = allQuestions.reduce((summary, question) => {
-//     // Step 2.1: Collect all answers for the current question
-//     const answersForQuestion = surveyResults
-//       .flatMap((person) =>
-//         person.answers.filter((answer) => answer.question === question)
-//       )
-//       .map((answer) => answer.answer);
-
-//     // Step 2.2: Store only unique answers for this question
-//     summary[question] = [...new Set(answersForQuestion)];
-
-//     return summary;
-//   }, {});
-
-//   return {
-//     uniqueQuestions: getNumberOfUniqueQuestions(),
-//     allAnswered: getUsernamesForAllQuestionsAnswered(),
-//     answersSummary: getAnswersSummary(),
-//   };
-// };
+  return {
+    uniqueQuestions: getNumberOfUniqueQuestions(),
+    allAnswered: getUsernamesForAllQuestionsAnswered(),
+    answersSummary: getAnswersSummary(),
+  };
+};
