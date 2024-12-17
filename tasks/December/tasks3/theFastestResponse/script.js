@@ -18,7 +18,7 @@
 // responded in time." (Simulate timeout using setTimeout and a promise race
 // against a timeout promise).
 
-let dataInfo = document.getElementById("data");
+const dataInfo = document.getElementById("data");
 
 const fetchFromMirrorA = () => {
   return new Promise((resolve, reject) => {
@@ -58,19 +58,21 @@ const timedOut = () => {
   });
 };
 
-const promises = [
-  fetchFromMirrorA(),
-  fetchFromMirrorB(),
-  fetchFromMirrorC(),
-  timedOut(),
-];
-
-Promise.race(promises)
-  .then((value) => {
+const getTheFastest = async () => {
+  try {
+    const value = await Promise.race([
+      fetchFromMirrorA(),
+      fetchFromMirrorB(),
+      fetchFromMirrorC(),
+      timedOut(),
+    ]);
     console.log("the fastest fetch:", value);
     dataInfo.innerHTML = value;
-  })
-  .catch((error) => {
+  } catch (error) {
     console.log(error);
     dataInfo.innerHTML = "No mirror responded in time.";
-  });
+  }
+};
+
+getTheFastest();
+

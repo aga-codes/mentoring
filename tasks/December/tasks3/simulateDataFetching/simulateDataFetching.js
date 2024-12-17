@@ -18,7 +18,7 @@
 // 4. If any of the "fetches" fail (simulate by randomly throwing an error in one of the functions),
 // display an error message instead.
 
-let message = document.getElementById("message");
+const message = document.getElementById("message");
 
 const getUserData = () => {
   return new Promise((resolve, reject) => {
@@ -39,23 +39,29 @@ const getPosts = () => {
 const getComments = () => {
   return new Promise((resolve, reject) => {
     setTimeout(() => {
-      //   resolve(["comment1", "comment2", "comment3"]);
+      // resolve(["comment1", "comment2", "comment3"]);
       reject(new Error("Fetching comments failed"));
     }, 1500);
   });
 };
 message.innerHTML = "Loading...";
-const promises = Promise.all([getUserData(), getPosts(), getComments()]);
 
-promises
-  .then((values) => {
-    console.log("values", values);
-    const userInfo = JSON.stringify(values[0]);
-    const allPosts = JSON.stringify(values[1]);
-    const allCommets = JSON.stringify(values[2]);
-    message.innerHTML = `user: ${userInfo}, posts: ${allPosts}, comments: ${allCommets}`;
-  })
-  .catch((error) => {
+const getData = async () => {
+  try {
+    const [userInfo, allPosts, allComments] = await Promise.all([
+      getUserData(),
+      getPosts(),
+      getComments(),
+    ]);
+    message.innerHTML = `user: ${JSON.stringify(
+      userInfo
+    )}, posts: ${JSON.stringify(allPosts)}, comments: ${JSON.stringify(
+      allComments
+    )}`;
+  } catch (error) {
     console.log("error", error);
     message.innerHTML = "Some error has occured. Please come back later.";
-  });
+  }
+};
+
+getData();
