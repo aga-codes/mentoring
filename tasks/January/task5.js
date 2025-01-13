@@ -101,11 +101,12 @@
 
 const getCompanyInfo = (employees) => {
   const groupByDepartment = employees.reduce((summary, employee) => {
+    const { department, ...employeeInfo } = employee;
     if (!summary[employee.department]) {
       summary[employee.department] = [];
     }
 
-    summary[employee.department].push(employee);
+    summary[employee.department].push(employeeInfo);
 
     return summary;
   }, {});
