@@ -197,13 +197,9 @@ const getCartSummary = (cart) => {
 
   const result = {
     totalCost: totalCost.toFixed(2),
-    groups: {},
+    groups,
   };
-
-  Object.keys(groups).forEach((tag) => {
-    result.groups[tag] = groups[tag];
-  });
-
+  
   return result;
 };
 
